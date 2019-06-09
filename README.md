@@ -1,6 +1,7 @@
 # leetcode
 ## Top Interview
 [2.Add-Two-Numbers](#2add-two-numbers)  
+[5.Longest-Palindromic-Substring](#5longest-palindromic-substring)  
 [146.LRU-Cache](#146lru-cache)  
 [380.Insert-Delete-GetRandom-O(1)](#380insert-delete-getrandom-o1)  
 [454.4Sum-II](#4544sum-ii)  
@@ -53,6 +54,33 @@ class Solution(object):
         if advance:
             result.next=ListNode(1)
         return head
+```
+
+### 5.Longest-Palindromic-Substring
+expand from centre in both odd even length substring
+```python
+class Solution(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        def expandFromCenter(leftPoint, rightPoint):
+            L = leftPoint
+            R = rightPoint
+            while L >= 0 and R < len(s) and s[L] == s[R]:
+                L-=1
+                R+=1
+            return R-L-1
+        start = end =0
+        for i in range(len(s)):
+            lenghOfOdd = expandFromCenter(i,i)
+            lenghOfEven = expandFromCenter(i,i+1)
+            lengthMax = max(lenghOfEven,lenghOfOdd)
+            if lengthMax > end-start:
+                start = i - int((lengthMax-1)/2)
+                end = i + int(lengthMax/2)
+        return s[start:end+1]
 ```
 
 ### 146.LRU-Cache
