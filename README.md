@@ -1,11 +1,11 @@
 # leetcode
 ## Top Interview
 [2.Add-Two-Numbers](#2add-two-numbers)  
-[146.LRU-Cache](#146lru-cache)
+[146.LRU-Cache](#146lru-cache)  
 [380.Insert-Delete-GetRandom-O(1)](#380insert-delete-getrandom-o1)  
 [454.4Sum-II](#4544sum-ii)  
 ### 2.Add-Two-Numbers
-个位进位？判断等长部分加法：直接返回（说明是单个数字相加）-> 之后把超出部分携带进位抄进最后答案
+(个位进位？判断等长部分加法：直接返回（说明是单个数字相加）)-> 之后把超出部分携带进位抄进最后答案
 ```python
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
