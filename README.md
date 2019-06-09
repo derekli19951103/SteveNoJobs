@@ -6,7 +6,7 @@
 [380.Insert-Delete-GetRandom-O(1)](#380insert-delete-getrandom-o1)  
 [454.4Sum-II](#4544sum-ii)  
 ### 2.Add-Two-Numbers
-(个位进位？判断等长部分加法：直接返回（说明是单个数字相加）)-> 之后把超出部分携带进位抄进最后答案
+个位进位？-> 等长部分加法 -> 之后把超出部分携带进位抄进最后答案
 ```python
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
@@ -123,7 +123,7 @@ class LRUCache:
 ```
 
 ### 380.Insert-Delete-GetRandom-O(1)
-use map hashing to fast check exixstence
+use map hashing to fast check existence
 ```python
 import random
 class RandomizedSet:
