@@ -1,9 +1,9 @@
 # leetcode
 ## Top Interview
 [2.Add-Two-Numbers](#2add-two-numbers)  
+[146.LRU-Cache](#146lru-cache)
 [380.Insert-Delete-GetRandom-O(1)](#380insert-delete-getrandom-o1)  
 [454.4Sum-II](#4544sum-ii)  
-
 ### 2.Add-Two-Numbers
 个位进位？判断等长部分加法：直接返回（说明是单个数字相加）-> 之后把超出部分携带进位抄进最后答案
 ```python
@@ -54,25 +54,46 @@ class Solution(object):
             result.next=ListNode(1)
         return head
 ```
-### 454.4Sum-II
-construct counter parts of sum of two arrays with the other two's sum
+
+### 146.LRU-Cache
+keep an order of usage in order to evict when putting  
+optimization: use a second hashmap to store order index
 ```python
-class Solution:
-    def fourSumCount(self, A: List[int], B: List[int], C: List[int], D: List[int]) -> int:
-        count = 0
-        dictCD = {}
-        for c in C:
-            for d in D:
-                if c+d in dictCD:
-                    dictCD[c+d]+=1
-                else:
-                    dictCD[c+d]=1
-        for a in A:
-            for b in B:
-                if -(a+b) in dictCD:
-                    count += dictCD[-(a+b)]
-        return count
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.cache = {}
+        self.capacity = capacity
+        self.order = []
+
+    def get(self, key: int) -> int:
+        try:
+            value = self.cache[key]
+            self.order.remove(key)
+            self.order.append(key)
+            return value
+        except (KeyError,ValueError) as e:
+            return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self.cache[key] = value
+            self.order.remove(key)
+            self.order.append(key)
+        else:
+            if len(self.cache) < self.capacity:
+                self.cache[key] = value
+                self.order.append(key)
+            else:
+                try:
+                    evicted = self.order.pop(0)
+                    del self.cache[evicted]
+                    self.cache[key] = value
+                    self.order.append(key)
+                except KeyError:
+                    pass
 ```
+
 ### 380.Insert-Delete-GetRandom-O(1)
 use map hashing to fast check exixstence
 ```python
@@ -114,4 +135,24 @@ class RandomizedSet:
         Get a random element from the set.
         """
         return random.choice(self.real_set)
+```
+
+### 454.4Sum-II
+construct counter parts of sum of two arrays with the other two's sum
+```python
+class Solution:
+    def fourSumCount(self, A: List[int], B: List[int], C: List[int], D: List[int]) -> int:
+        count = 0
+        dictCD = {}
+        for c in C:
+            for d in D:
+                if c+d in dictCD:
+                    dictCD[c+d]+=1
+                else:
+                    dictCD[c+d]=1
+        for a in A:
+            for b in B:
+                if -(a+b) in dictCD:
+                    count += dictCD[-(a+b)]
+        return count
 ```
