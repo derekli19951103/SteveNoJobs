@@ -1,11 +1,11 @@
 # leetcode
 ## Top Interview
-[2.Add-Two-Numbers](#2add-two-numbers)  
-[5.Longest-Palindromic-Substring](#5longest-palindromic-substring)  
-[146.LRU-Cache](#146lru-cache)  
-[380.Insert-Delete-GetRandom-O(1)](#380insert-delete-getrandom-o1)  
-[454.4Sum-II](#4544sum-ii)  
-### 2.Add-Two-Numbers
+[2.Add Two Numbers](#2-add-two-numbers)  
+[5.Longest Palindromic Substring](#5-longest-palindromic-substring)  
+[146.LRU Cache](#146-lru-cache)  
+[380.Insert Delete GetRandom O(1)](#380-insert-delete-getrandom-o1)  
+[454.4Sum II](#454-4sum-ii)  
+### 2.Add Two Numbers
 个位进位？-> 等长部分加法 -> 之后把超出部分携带进位抄进最后答案
 ```python
 class Solution(object):
@@ -56,7 +56,7 @@ class Solution(object):
         return head
 ```
 
-### 5.Longest-Palindromic-Substring
+### 5.Longest Palindromic Substring
 expand from centre in both odd even length substring
 ```python
 class Solution(object):
@@ -83,7 +83,7 @@ class Solution(object):
         return s[start:end+1]
 ```
 
-### 146.LRU-Cache
+### 146.LRU Cache
 keep an order of usage in order to evict when putting  
 optimization: use a second hashmap to store order index
 ```python
@@ -122,7 +122,7 @@ class LRUCache:
                     pass
 ```
 
-### 380.Insert-Delete-GetRandom-O(1)
+### 380.Insert Delete GetRandom O(1)
 use map hashing to fast check existence
 ```python
 import random
@@ -165,7 +165,7 @@ class RandomizedSet:
         return random.choice(self.real_set)
 ```
 
-### 454.4Sum-II
+### 454.4Sum II
 construct counter parts of sum of two arrays with the other two's sum
 ```python
 class Solution:
