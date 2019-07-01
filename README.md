@@ -3,8 +3,13 @@
 [2.Add Two Numbers](#2add-two-numbers) 
 [3.Longest Substring Without Repeating Characters](#3longest-substring-without-repeating-characters)  
 [4.Median of Two Sorted Arrays](#4median-of-two-sorted-arrays)  
-[5.Longest Palindromic Substring](#5longest-palindromic-substring) 
+[5.Longest Palindromic Substring](#5longest-palindromic-substring)  
+[20. Valid Parentheses](#20valid-parentheses)  
+[53.Maximum Subarray](#53maximum-subarray)  
+[56. Merge Intervals](#56merge-intervals)  
+[121. Best Time to Buy and Sell Stock](#121best-time-to-buy-and-sell-stock)
 [146.LRU Cache](#146lru-cache)  
+[206. Reverse Linked List](#206reverse-linked-list)  
 [380.Insert Delete GetRandom O(1)](#380insert-delete-getrandom-o1)  
 [454.4Sum II](#4544sum-ii)  
 ### 2.Add Two Numbers
@@ -199,6 +204,73 @@ class Solution(object):
         return s[start:end+1]
 ```
 
+### 20.Valid Parentheses
+create a stack to keep track open parentheses, when encounter a closing parenthese, check if the top is its corresponding open parenthese
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        mapping = {")": "(", "}": "{", "]": "["}
+        for char in s:
+            if char in mapping:
+                if stack:
+                    top = stack.pop()
+                else:
+                    top = '#'
+                if mapping[char] != top:
+                    return False
+            else:
+                stack.append(char)
+        return not stack
+```
+
+### 53.Maximum Subarray
+when the culmulative total decrease below 0, break the acculmulation
+```python
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        for i in range(1, len(nums)):
+            if nums[i-1] > 0:
+                nums[i] += nums[i-1]
+        return max(nums)
+```
+
+### 56.Merge Intervals
+create stack to keep track the latest non-overlap interval, if any sorted intervals overlap it, extend the end to the overlap interval's end.
+```python
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals.sort(key=lambda x: x[0])
+
+        merged = []
+        for interval in intervals:
+            # if the list of merged intervals is empty or if the current
+            # interval does not overlap with the previous, simply append it.
+            if not merged or merged[-1][1] < interval[0]:
+                merged.append(interval)
+            else:
+            # otherwise, there is overlap, so we merge the current and previous
+            # intervals.
+                merged[-1][1] = max(merged[-1][1], interval[1])
+
+        return merged
+```
+
+### 121.Best Time to Buy and Sell Stock
+if price is lower update minprice or profit is higher than maxprofit, update maxprofit
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        minprice = float('inf')
+        maxprofit = 0
+        for i in range(len(prices)):
+            if prices[i]<minprice:
+                minprice = prices[i]
+            elif prices[i] - minprice > maxprofit:
+                maxprofit = prices[i] - minprice
+        return maxprofit
+```
+
 ### 146.LRU Cache
 keep an order of usage in order to evict when putting  
 optimization: use a second hashmap to store order index
@@ -335,6 +407,21 @@ class LRUCache():
                 self._remove_least_used_node()
                 
                 self.size -= 1
+```
+
+### 206.Reverse Linked List
+put current next node on hold, link current next node to previos node, then set current node to current next node
+```python
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        prev = None
+        curr = head
+        while curr:
+            nextNode = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nextNode
+        return prev
 ```
 
 ### 380.Insert Delete GetRandom O(1)
