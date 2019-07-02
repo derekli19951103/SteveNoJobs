@@ -1,15 +1,18 @@
 # leetcode
 ## Top Interview
 [2.Add Two Numbers](#2add-two-numbers)  
-[3.Longest Substring Without Repeating Characters](#3longest-substring-without-repeating-characters)  
-[4.Median of Two Sorted Arrays](#4median-of-two-sorted-arrays)  
+[❖3.Longest Substring Without Repeating Characters](#3longest-substring-without-repeating-characters)  
+[❖4.Median of Two Sorted Arrays](#4median-of-two-sorted-arrays)  
 [5.Longest Palindromic Substring](#5longest-palindromic-substring)  
-[20. Valid Parentheses](#20valid-parentheses)  
+[❖20. Valid Parentheses](#20valid-parentheses)  
 [53.Maximum Subarray](#53maximum-subarray)  
 [56. Merge Intervals](#56merge-intervals)  
 [121. Best Time to Buy and Sell Stock](#121best-time-to-buy-and-sell-stock)  
+[138. Copy List with Random Pointer](#138copy-list-with-random-pointer)  
 [146.LRU Cache](#146lru-cache)  
-[206. Reverse Linked List](#206reverse-linked-list)  
+[❖206. Reverse Linked List](#206reverse-linked-list)  
+[238. Product of Array Except Self](#238product-of-array-excep-self)  
+[❖297. Serialize and Deserialize Binary Tree](#297serialize-and-deserialize-binary-tree)  
 [380.Insert Delete GetRandom O(1)](#380insert-delete-getrandom-o1)  
 [454.4Sum II](#4544sum-ii)  
 ### 2.Add Two Numbers
@@ -271,6 +274,23 @@ class Solution:
         return maxprofit
 ```
 
+### 138. Copy List with Random Pointer
+initialize nodes in a dic, and link nodes via dic key-values
+```python
+class Solution:
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        dic = dict()
+        m = n = head
+        while m:
+            dic[m] = Node(m.val,m.next,m.random)
+            m = m.next
+        while n:
+            dic[n].next = dic.get(n.next)
+            dic[n].random = dic.get(n.random)
+            n = n.next
+        return dic.get(head)
+```
+
 ### 146.LRU Cache
 keep an order of usage in order to evict when putting  
 optimization: use a second hashmap to store order index
@@ -422,6 +442,75 @@ class Solution:
             prev = curr
             curr = nextNode
         return prev
+```
+
+### 238.Product of Array Except Self
+compute a left product, to compute its left nums product except itself, then a right product, and multiply element-wise two products array
+```python
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        L,R = [1]*len(nums)
+        for i in range(len(nums)-1):
+            L[i+1] = L[i]*nums[i]
+        R = [1]*len(nums)
+        for i in range(len(nums)-1,0,-1):
+            R[i-1] = R[i] * nums[i]
+        for i in range(len(L)):
+            L[i] = L[i]*R[i]
+        return L
+```
+
+### 297.Serialize and Deserialize Binary Tree
+done using dfs:  
+when serializing use queue to dfs  
+when deserializing check index+1 for left position and index+2 for right position
+```python
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        q = []
+        q.append(root)
+        lst = []
+        while q:
+            node = q.pop(0)
+            if node is None:
+                lst.append('#')
+            else:
+                lst.append(str(node.val))
+                q.append(node.left)
+                q.append(node.right)
+        print(lst)
+        return ','.join(lst)
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        if not data or data=='#': return None
+        nodes = data.split(',')
+        root = TreeNode(int(nodes[0]))
+        q = []
+        q.append(root)
+        index = 1
+        while q:
+            node = q.pop(0)
+            if nodes[index] is not '#':
+                node.left = TreeNode(int(nodes[index]))
+                q.append(node.left)
+            index += 1
+        
+            if nodes[index] is not '#':
+                node.right = TreeNode(int(nodes[index]))
+                q.append(node.right)
+            index += 1
+        return root
 ```
 
 ### 380.Insert Delete GetRandom O(1)
